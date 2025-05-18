@@ -1,5 +1,5 @@
 <h1>Wristmon</h1>
-Wristmon is an open source virtual pet application for smartwatches inspired by digimon. It's goal is to make excercise fun while training a virtual monster/pet.
+Wristmon is an open source virtual pet application for smartwatches inspired by Digimon. It's goal is to make excercise fun while training a virtual monster/pet.
 <h2>Features in Progress</h2>
 <ul>
   <li/>Pet evolution cycle
