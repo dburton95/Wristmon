@@ -8,65 +8,67 @@ package com.dgray.wristmon.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.foundation.layout.Column
+import androidx.wear.compose.material.Button
+import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.TimeText
-import androidx.wear.tooling.preview.devices.WearDevices
-import com.dgray.wristmon.R
-import com.dgray.wristmon.presentation.theme.WristmonTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
-
         super.onCreate(savedInstanceState)
 
-        setTheme(android.R.style.Theme_DeviceDefault)
+        val initialPet = loadPetFromConfig(this)
 
         setContent {
-            WearApp("Android")
+            MaterialTheme {
+                WristmonApp(initialPet)
+            }
         }
     }
 }
 
-@Composable
-fun WearApp(greetingName: String) {
-    WristmonTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background),
-            contentAlignment = Alignment.Center
-        ) {
-            TimeText()
-            Greeting(greetingName = greetingName)
-        }
-    }
-}
+data class Pet(
+    val name: Pet,
+    var hunger: Int,
+    var happiness: Int
+)
 
 @Composable
-fun Greeting(greetingName: String) {
-    Text(
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colors.primary,
-        text = stringResource(R.string.hello_world, greetingName)
+fun WristmonApp(initialPet: Pet) {
+    var pet by remember { val mutableStateOf = mutableStateOf(
+        Pet(
+            initialPet,
+            hunger = TODO(),
+            happiness = TODO()
+        )
     )
+        mutableStateOf
+    }
+
+    Column {
+        Text("Meet your pet: ${pet.name}")
+        Text("Experience Points: ${pet.hunger}")
+        Text("Happiness: ${pet.happiness}")
+
+        Button(onClick = {
+            pet = pet.copy(
+                hunger = (pet.hunger - 10).coerceAtLeast(0),
+                happiness = (pet.happiness + 5).coerceAtMost(100)
+            )
+        }) {
+            Text("Feed ${pet.name}")
+        }
+    }
 }
 
-@Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    WearApp("Preview Android")
+fun PreviewWristmonApp() {
+    MaterialTheme {
+        WristmonApp(
+            initialPet = TODO()
+        )
+    }
 }

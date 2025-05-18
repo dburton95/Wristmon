@@ -55,4 +55,5 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.play.services.fitness)
+    implementation("com.google.code.gson:gson:2.11.0")
 }
